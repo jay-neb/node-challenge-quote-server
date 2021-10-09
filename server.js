@@ -14,10 +14,29 @@ const quotes = require("./quotes.json");
 //   /quotes            - Should return all quotes (json)
 //   /quotes/random     - Should return ONE quote (json)
 app.get("/", function (request, response) {
-  response.send("Neill's Quote Server!  Ask me for /quotes/random, or /quotes");
+  response.send("Jay's Quote Server!  Ask me for /quotes/random, or /quotes");
 });
 
 //START OF YOUR CODE...
+
+app.get("/quotes", function (request, response) {
+  response.send(quotes);
+});
+
+app.get("/quotes/random", function (request, response) {
+  const randomQuote = pickFromArray(quotes);
+  response.send(randomQuote);
+});
+
+app.get("/quotes/search", function (request, response) {
+  const searchTerm = request.query.term.toLowerCase();
+  const searchQuotes = quotes.filter((quoteObj) => {
+    const lowerCaseQuote = quoteObj.quote.toLowerCase();
+    const lowerCaseAuthor = quoteObj.author.toLowerCase();
+    return lowerCaseQuote.includes(searchTerm) || lowerCaseAuthor.includes(searchTerm);
+  });
+  response.send(searchQuotes);
+});
 
 //...END OF YOUR CODE
 
@@ -26,7 +45,11 @@ app.get("/", function (request, response) {
 //example: pickFromArray(myContactsArray)
 //
 function pickFromArray(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+  const randomNumber = Math.random(); // Numero entre 0 y 1
+  // Por ejemplo, array con 20 elementos
+  const randomNumberXArrayLength = randomNumber * arr.length;
+  const randomIndex = Math.floor(randomNumberXArrayLength);
+  return arr[randomIndex];
 }
 
 //Start our server so that it listens for HTTP requests!
