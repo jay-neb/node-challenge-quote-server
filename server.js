@@ -6,6 +6,7 @@ const { response } = require("express");
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const lodash = require('lodash');
 
 app.use(cors());
 
@@ -27,7 +28,8 @@ app.get("/quotes", function (request, response) {
 });
 
 app.get("/quotes/random", function (request, response) {
-  const randomQuote = pickFromArray(quotes);
+  // const randomQuote = pickFromArray(quotes);
+  const randomQuote = lodash.sample(quotes);
   response.send(randomQuote);
 });
 
